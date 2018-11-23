@@ -1,0 +1,49 @@
+@font-face {
+  font-family: "icons";
+  src: static-url('/fonts/icons.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin icon-base($font-size, $vertical-align) {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-family: "icons";
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 1;
+  speak: none;
+  text-transform: none;
+  @if ($font-size) {
+    font-size: $font-size;
+  }
+  @if ($vertical-align) {
+    vertical-align: $vertical-align;
+  }
+}
+
+$icon-codepoints: (
+  // update according to icon font
+    'facebook': '\e901',
+    'twitter': '\e903',
+    'instagram': '\e900',
+    'search': '\e902'
+);
+
+@mixin icon($name, $font-size: 24px, $vertical-align: middle) {
+  &::before {
+    @include icon-base($font-size, $vertical-align);
+    content: map-get($icon-codepoints, $name);
+    @content;
+  }
+}
+
+@mixin icon-after($name, $font-size: 24px, $vertical-align: middle) {
+  &::after {
+    @include icon-base($font-size, $vertical-align);
+    content: map-get($icon-codepoints, $name);
+    @content;
+  }
+
+}

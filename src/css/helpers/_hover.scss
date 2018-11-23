@@ -1,0 +1,7 @@
+@mixin hover($mobile-class-name: "no-touch"){
+    &:hover{
+        .#{$mobile-class-name} & {
+            @content
+        }
+    }
+}

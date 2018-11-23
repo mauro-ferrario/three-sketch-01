@@ -1,0 +1,29 @@
+$font-path: "/../fonts/";
+
+@font-face{
+    font-family: 'icons';
+    src: url('#{$font-path}icomoon.eot?#iefix') format('embedded-opentype'),
+         url('#{$font-path}icomoon.woff') format('woff'), url('#{$font-path}icomoon.ttf')  format('truetype'), url('#{$font-path}icomoon.svg#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*
+@font-face{
+    font-family: 'BodoniStd';
+    src: url('#{$font-path}BodoniStd.eot?#iefix') format('embedded-opentype'),url('#{$font-path}BodoniStd.otf')  format('opentype'),
+         url('#{$font-path}BodoniStd.woff') format('woff'), url('#{$font-path}BodoniStd.ttf')  format('truetype'), url('#{$font-path}BodoniStd.svg#BodoniStd') format('svg');
+}
+
+@font-face{
+    font-family: 'BodoniStd-Italic';
+    src: url('#{$font-path}BodoniStd-Italic.eot?#iefix') format('embedded-opentype'),url('#{$font-path}BodoniStd-Italic.otf')  format('opentype'),
+         url('#{$font-path}BodoniStd-Italic.woff') format('woff'), url('#{$font-path}BodoniStd-Italic.ttf')  format('truetype'), url('#{$font-path}BodoniStd-Italic.svg#BodoniStd-Italic') format('svg');
+}
+
+@font-face{
+    font-family: 'BodoniStd-Book';
+    src: url('#{$font-path}BodoniStd-Book.eot?#iefix') format('embedded-opentype'),url('#{$font-path}BodoniStd-Book.otf')  format('opentype'),
+         url('#{$font-path}BodoniStd-Book.woff') format('woff'), url('#{$font-path}BodoniStd-Book.ttf')  format('truetype'), url('#{$font-path}BodoniStd-Book.svg#BodoniStd-Italic') format('svg');
+}
+*/

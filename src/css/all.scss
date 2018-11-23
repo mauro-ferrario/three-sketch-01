@@ -1,0 +1,18 @@
+@import './node_modules/reset-css/sass/reset';
+@import './node_modules/include-media/dist/include-media';
+@import "variables";
+@import "fonts";
+@import "typography";
+@import "elements/all";
+@import "breakpoints";
+@import "helpers/icons";
+@import "helpers/clearFloat";
+@import "helpers/hover";
+@import "components/all";
+
+body{
+    color: $main-text-color;
+    @include RubikRegular;
+    font-size: 16px;
+    line-height: 22px;
+}

@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:400,400i,700,700i');
+
+@mixin RubikRegular(){
+    font-family: 'Rubik', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@mixin RubikRegularItalic(){
+    font-family: 'Rubik', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+@mixin RubikBold(){
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+@mixin RubikBoldItalic(){
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+@mixin HelveticaLight(){
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight:300;
+    font-style: normal;
+}
+
+@mixin HelveticaRegular(){
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight:400;
+    font-style: normal;
+}
+
+@mixin HelveticaBold(){
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight:600;
+    font-style: normal;
+}

@@ -1,0 +1,14 @@
+a,
+a:link,
+a:visited{
+    color: inherit;
+    text-decoration: none;
+}
+
+a{
+    text-decoration: underline;
+    transition: color .3s;
+    &:hover{
+        color: $active-color;
+    }
+}

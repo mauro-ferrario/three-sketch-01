@@ -1,0 +1,20 @@
+// General
+
+$max-width-main: 1300px;
+$padding-main: 25px;
+$padding-main-mobile: 25px;
+$padding-main-tablet: 55px;
+
+$max-width-central: 800px;
+$padding-central: $padding-main;
+$padding-central-mobile: $padding-main-mobile;
+
+$max-width-central-medium: $max-width-main - $padding-main*4;
+$padding-central-medium: $padding-main;
+
+$gutter: 20px;
+
+$color-scorpion: #5b5b5b;
+$color-sidecar: #f6dbc6;
+$active-color: $color-sidecar;
+$main-text-color: #000000;
