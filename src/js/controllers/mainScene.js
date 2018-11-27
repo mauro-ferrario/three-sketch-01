@@ -1,6 +1,7 @@
 import ThreeBase, {SceneUI} from "../libs/mauroferrario/ThreeBase"
 import * as THREE from "three";
 import Path from "../components/path";
+import DynamicTexture from '../components/dynamicTexture';
 
 const CustomUI = class extends SceneUI{
   constructor(threeBase){
@@ -24,10 +25,18 @@ export default class extends ThreeBase{
     this.mousePos={x:0, y:0};
   }
 
+  setupDynamicTexture(){
+    this.planeTexture = new DynamicTexture(1024, 1024);
+    this.textureMaterial = new THREE.Texture(this.planeTexture.canvas);
+    this.textureMaterial.anisotropy = 4;
+  }
+
   onMouseClick(intersects){
     if(intersects[0].object == this.plane){
       let pos = intersects[0].point;
       this.path.movePointer(pos.x,pos.z);
+      const trailColorFromPath = this.path.currentColor;
+      this.planeTexture.setTrailColor(trailColorFromPath);
     }
   }
 
@@ -74,12 +83,14 @@ export default class extends ThreeBase{
   }
 
   addPlane(){
-    const geometry = new THREE.PlaneGeometry( 2250, 2250, 2 );
-    const mat = new THREE.MeshPhongMaterial({
-        color: 0xffffff,
-        flatShading: THREE.FlatShading,
-    });
-    this.plane = new THREE.Mesh( geometry, mat );
+    this.setupDynamicTexture();
+    this.planeSize = {x: 2250, y: 2250};
+    const geometry = new THREE.PlaneGeometry( this.planeSize.x, this.planeSize.y, 2 );
+    const material = new THREE.MeshPhongMaterial({ 
+      map: this.textureMaterial,
+      flatShading: THREE.FlatShading
+     });
+    this.plane = new THREE.Mesh( geometry, material );
     this.plane.position.set(0, 0, 0);
     this.plane.rotateX(-Math.PI / 2);
     this.plane.receiveShadow = true;
@@ -99,6 +110,14 @@ export default class extends ThreeBase{
   updateScene(timestamp){
     if(this.path){
       this.path.update();
+    }
+    if(this.planeTexture){
+      this.textureMaterial.needsUpdate = true;
+      const posTrail = {
+        x: this.path.pointerPos.x/this.planeSize.x, 
+        y: this.path.pointerPos.z/this.planeSize.y
+      };
+      this.planeTexture.update(posTrail.x, posTrail.y);
     }
   } 
 }
