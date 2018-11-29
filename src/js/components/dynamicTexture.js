@@ -24,7 +24,7 @@ export default class{
   drawCircle(x = 0, y = 0, radius = 10){
     this.context.beginPath();
     this.context.arc(x, y, radius, 0, 2 * Math.PI, false);
-    this.context.fillStyle = this.trailColor;
+    this.context.fillStyle = '#'+this.trailColor.getHexString();
     this.context.fill();
   }
 }

@@ -1,5 +1,6 @@
 import TargetGroup from './targetGroup';
 import { EventEmitter } from 'events';
+import * as THREE from "three";
 
 export default class extends EventEmitter{
   constructor(planeSize, mainScene){
@@ -11,10 +12,18 @@ export default class extends EventEmitter{
 
   showNewTarget(){
     const meshPos = this.getRandomPosition();
-    const tempMesh = new TargetGroup(meshPos.x, meshPos.z, 'cube', Math.random()*0xffffff);
+    const randomColor = this.getRandomColor();
+    const tempMesh = new TargetGroup(meshPos.x, meshPos.z, 'cube', randomColor);
     this.scene.add(tempMesh);
     this.targets.push(tempMesh);
     this.emit('add-new-target', tempMesh);
+  }
+
+  getRandomColor(){
+    const r = (Math.random());
+    const g = (Math.random());
+    const b = (Math.random());
+    return new THREE.Color(r,g,b);
   }
   
   update(){

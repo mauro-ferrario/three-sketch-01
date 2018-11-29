@@ -6,11 +6,15 @@ import cubicBezier from "../helpers/bezier";
 export default class extends THREE.Group{
   constructor(){
     super();
+    this.pointerPos = new THREE.Vector3();
+    this.startColor = new THREE.Color(1, 1, 1);
+    this.endColor = new THREE.Color(1, 1, 1);
+    this.oldPos = new THREE.Vector3();
+    this.targetPos = new THREE.Vector3();
     this.setupTypes();
     this.setFrequency(0.06);
     this.setSpread(50);
     this.setDistanceForPath(70);
-    this.pointerPos = {x: -500, z: 0};
     this.meshes = [];
     this.addPointer(-500);
     this.setMaxVisibleMesh(31);
@@ -37,10 +41,27 @@ export default class extends THREE.Group{
     this.distanceForPath = distance;
 
   }
-  movePointer(x, z){
+  movePointer(x, z, nextColor){
+    this.setStartAndEndColor(nextColor);
+    this.setTargetAndOldPos(x,z);
+    this.percFromTarget = 0;
     this.setNewRandomType();
     this.setupAnimation(x,z);
     this.startAnimation();
+  }
+
+  setTargetAndOldPos(x,z){
+    this.oldPos.x = this.pointerPos.x;
+    this.oldPos.y = this.pointerPos.y;
+    this.oldPos.z = this.pointerPos.z;
+    this.targetPos.x = x;
+    this.targetPos.y = 0;
+    this.targetPos.z = z;
+  }
+
+  setStartAndEndColor(nextColor){
+    this.startColor = this.endColor;
+    this.endColor = nextColor;
   }
 
   setupAnimation(finalX = 500, finalZ = -500){
@@ -61,10 +82,19 @@ export default class extends THREE.Group{
   }
 
   update(){
+    const percFromTarget = this.getPercFromTarget();
+    this.currentColor = this.colourGradientor(percFromTarget, this.startColor,this.endColor);
     this.updatePointer();
-      if(this.canAddNewMesh())
-        this.addNewMeshAlongPath();
-      this.updateMeshes();
+    if(this.canAddNewMesh())
+      this.addNewMeshAlongPath();
+    this.updateMeshes();
+  }
+
+  getPercFromTarget(){
+    const maxDistance = this.oldPos.distanceTo(this.targetPos);
+    const currentDistance = this.pointerPos.distanceTo(this.targetPos);
+    const distance = currentDistance/maxDistance;
+    return Math.min(Math.max(distance, 0.0), 1.0);
   }
 
   updateMeshes(){
@@ -78,6 +108,17 @@ export default class extends THREE.Group{
         this.removeMesh(mesh, i);
     }  
   }
+
+  colourGradientor(p, rgb_beginning, rgb_end){
+    let w = p * 2 - 1;
+    let w1 = (w + 1) / 2.0;
+    let w2 = 1 - w1;
+    const color = new THREE.Color();
+    color.r = rgb_beginning.r * w1 + rgb_end.r * w2;
+    color.g = rgb_beginning.g * w1 + rgb_end.g * w2;
+    color.b = rgb_beginning.b * w1 + rgb_end.b * w2;
+    return color;
+  };
 
   removeMesh(mesh, meshIndex){
     this.remove(mesh);
@@ -114,28 +155,7 @@ export default class extends THREE.Group{
   setNewRandomType(){
     const randomMeshPos = parseInt(this.getRandomArbitrary(0,2));
     this.currentType = this.types[randomMeshPos];
-    this.currentColor = this.getRandomHexNumber();
   }
-
-  getRandomHexNumber(){
-    // Code from https://www.paulirish.com/2009/random-hex-color-code-snippets/
-    return '#'+Math.floor(Math.random()*16777215).toString(16);
-  }
-
-  hexToRgb(hex) {
-    // Code from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-        return r + r + g + g + b + b;
-    });
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
-}
 
   getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
