@@ -132,7 +132,6 @@ export default class extends ThreeBase{
     this.plane.receiveShadow = true;
     this.plane.name = "plane";
     this.scene.add(this.plane);
-    // this.addInteractiveObject(this.plane);
   }
 
   setupLight() {
