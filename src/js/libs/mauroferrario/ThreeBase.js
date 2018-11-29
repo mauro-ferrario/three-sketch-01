@@ -20,7 +20,7 @@ export class SceneUI {
 }
 
 export default class ThreeBase{
-    constructor(showGui = true){
+    constructor(target, showGui = true){
       this.setup();
       this.setupScene();
       this.setupVariables();
@@ -29,7 +29,7 @@ export default class ThreeBase{
       this.setupLight();
       this.setupGUI(SceneUI, showGui);
       this.animate();
-      document.body.appendChild( this.renderer.domElement );
+      target.appendChild( this.renderer.domElement );
       window.addEventListener( 'resize', this.onWindowResize.bind(this), false );
       document.addEventListener( 'mousemove', this.onDocumentMouseMove.bind(this), false );
       document.addEventListener( 'click', this.onDocumentClick.bind(this), false );
@@ -41,7 +41,9 @@ export default class ThreeBase{
     this.mouse = new THREE.Vector2();
     this.onMouseClickFunction;
     this.onMouseMoveFunction;
+    this.onMouseNotOverFunction;
     this.interactiveObjects = [];
+    this.setRaycastChildren(false);
   }
 
   setupVariables(){
@@ -66,7 +68,9 @@ export default class ThreeBase{
 
   setupScene()
   {
-    this.scene = new THREE.Scene();
+    if(!this.scene){
+      this.scene = new THREE.Scene();
+    }
   }
 
   setupCamera({useOrbit= false, fov= 50, near= .1, far= 1000} = {})
@@ -174,7 +178,7 @@ export default class ThreeBase{
     if(this.onMouseMoveFunction || this.onMouseOverFunction || this.onMouseClickFunction)
       this.saveMousePos(event);
     if(this.onMouseMoveFunction)
-      this.checkOver();
+      this.checkOver(this.interactiveObjects);
   }
 
   saveMousePos(event){
@@ -196,16 +200,30 @@ export default class ThreeBase{
     this.interactiveObjects.push(obj);
   }
 
+  setRaycastChildren(raycastChildren){
+    this.raycastChildren = raycastChildren;
+  }
+
   checkOver(toCheck, event)
   {
     var raycaster = new THREE.Raycaster();
     raycaster.setFromCamera( this.mouse, this.camera );
-    var intersects = raycaster.intersectObjects( toCheck );
+    // Add second parameter to true to check also the children of the object
+    var intersects = raycaster.intersectObjects( toCheck, this.raycastChildren);
     if(intersects.length > 0){
       if(this.onMouseMoveFunction && !event)
         this.onMouseMoveFunction(intersects);
       if(this.onMouseClickFunction && event == "click")
         this.onMouseClickFunction(intersects);
+    }
+    else{
+      this.onMouseNotOver();
+    }
+  }
+
+  onMouseNotOver(){
+    if(this.onMouseNotOverFunction){
+      this.onMouseNotOverFunction();
     }
   }
 
