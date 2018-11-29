@@ -37,6 +37,7 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "events": "^3.0.0",
     "gsap": "^2.0.2",
     "include-media": "^1.4.9",
     "reset-css": "^4.0.1",
